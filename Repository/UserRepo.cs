@@ -22,8 +22,22 @@ namespace UsersAPI.Repository
         
         public IEnumerable<UserServiceInfo> GetAllUsers()
         {
+            //var validateName=_context.
             return _context.UserServiceInfos.ToList();
         }
+
+        /*public JsonResult IsElectricianIDNameExist(string ElectricianID, int? id)
+        {
+            var validateName = db.ServiceProviders.FirstOrDefault(x => x.ElectricianID == ElectricianID && x.Sid != id);
+            if (validateName != null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }*/
         public async Task<UserServiceInfo> PostUser(UserServiceInfo item)
         {
             UserServiceInfo Sp = null;
@@ -44,6 +58,7 @@ namespace UsersAPI.Repository
                     ServiceCity = item.ServiceCity,
                     Address = item.Address,
                     Aadhaarno = item.Aadhaarno,
+
                     Role = item.Role,
                     Experience = item.Experience,
                     Costperhour = item.Costperhour,
@@ -79,6 +94,26 @@ namespace UsersAPI.Repository
             sp.IsProvicedBooked = item.IsProvicedBooked;
             _context.SaveChanges();
             return sp;
+        }
+
+        public UserServiceInfo GetUserServiceInfoById(string id)
+        {
+            UserServiceInfo item = _context.UserServiceInfos.Find(id);
+
+            return item;
+        }
+        public UserServiceInfo GetUserServiceInfoByUserName(string Username)
+        {
+            UserServiceInfo item = _context.UserServiceInfos.FirstOrDefault(usr => usr.Username == Username);
+
+            return item;
+        }
+
+        public UserServiceInfo GetUserServiceInfoByAadhaar(string Aadhaar)
+        {
+            UserServiceInfo item = _context.UserServiceInfos.FirstOrDefault(usr => usr.Aadhaarno == Aadhaar);
+
+            return item;
         }
     }
 }

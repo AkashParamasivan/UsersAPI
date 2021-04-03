@@ -27,22 +27,22 @@ namespace UsersAPI.Controllers
         public IEnumerable<UserServiceInfo> GetUserServiceInfos()
         {
             _log4net.Info("Get User is Invoked");
-            return  _context.GetAllUsers();
+            return _context.GetAllUsers();
         }
 
-       /* // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserServiceInfo>> GetUserServiceInfo(string id)
-        {
-            var userServiceInfo = await _context.UserServiceInfos.FindAsync(id);
+        /* // GET: api/Users/5
+         [HttpGet("{id}")]
+         public async Task<ActionResult<UserServiceInfo>> GetUserServiceInfo(string id)
+         {
+             var userServiceInfo = await _context.UserServiceInfos.FindAsync(id);
 
-            if (userServiceInfo == null)
-            {
-                return NotFound();
-            }
+             if (userServiceInfo == null)
+             {
+                 return NotFound();
+             }
 
-            return userServiceInfo;
-        }*/
+             return userServiceInfo;
+         }*/
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
@@ -53,7 +53,7 @@ namespace UsersAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var editedUser = await _context.EditUser(id,userServiceInfo);
+            var editedUser = await _context.EditUser(id, userServiceInfo);
 
             return Ok(editedUser);
         }
@@ -87,6 +87,75 @@ namespace UsersAPI.Controllers
             return Ok(deletedUser);
         }
 
-        
+        [HttpGet("{id}")]
+        public IActionResult Get(string id)
+        {
+            _log4net.Info("Get by id is called!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var user1= _context.GetUserServiceInfoByAadhaar(id);
+            var user = _context.GetUserServiceInfoById(id);
+            _log4net.Info("Data of the id returned!");
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(user);
+        }
+
+        [HttpGet("Username/{Username}")]
+        public IActionResult GetUsername(string Username)
+        {
+            _log4net.Info("Get by id is called!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var user1= _context.GetUserServiceInfoByAadhaar(id);
+            var user = _context.GetUserServiceInfoByUserName(Username);
+            _log4net.Info("Data of the id returned!");
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(user);
+        }
+        [HttpGet("Aadhaar/{Aadhaar}")]
+        public IActionResult getAadhaar(string Aadhaar)
+        {
+            return Ok(_context.GetUserServiceInfoByAadhaar(Aadhaar));
+        }
+
+      /*  [HttpGet("{Aadhaar}")]
+        public UserServiceInfo GetAdhaar(string Aadhaar)
+        {
+            //return _context.GetUserServiceInfoByAadhaar(Aadhaar);
+            _log4net.Info("Get by id is called!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var user1= _context.GetUserServiceInfoByAadhaar(id);
+            var user1 = _context.GetUserServiceInfoByUserName(Aadhaar);
+            _log4net.Info("Data of the id returned!");
+
+            if (user1 == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(user1);
+        }*/
+
+
     }
 }
